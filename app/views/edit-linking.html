@@ -1,0 +1,141 @@
+<div class="col-md-12">
+	<div class="alert alert-success" role="alert" ng-show="saved"><span style="font-weight: bold">Changes Saved!</span> Changes to EDTA Tube {{ currentEdtaTube.edtaTubeId }} have been saved successfully.</div>
+	<fieldset ng-disable="busy" ng-disabled="busy || saved">
+	<legend style="text-align: center">Edit Linking</legend>
+	<a href="#/linking">
+		<span class="glyphicon glyphicon-plus"></span>
+		Click here to add new EDTA Tube Linking
+	</a>
+	<div class="panel panel-default" style="background-color: #FFAD85">
+		<!--<div class="panel-body">
+			<dl>
+				<dt>EDTATube:</dt>
+				<dd ng-bind="currentEdtaTube | json"></dd>
+				<dt>Form Validity:</dt>
+				<dd ng-bind="editLinkingForm.$valid"></dd>
+				<dt>Current EDTA Tube Validity</dt>
+				<dd ng-bind="currentEdtaTubeValidity | json"></dd>
+			</dl>
+		</div>-->
+
+		<table class="table">
+			<tr>
+				<th>&nbsp;</th>
+				<th>EDTA Tube</th>
+				<th>Remarks</th>
+				<th>Plasma 1</th>
+				<th>Plasma 2</th>
+				<th>Plasma 3</th>
+				<th>Plasma 4</th>
+				<th>Buffy Coat 1</th>
+				<th>Buffy Coat 2</th>
+				<th>RBC</th>
+			</tr>
+			<tr style="height: 85px" ng-form="editLinkingForm">
+				<td class="form-group">
+					<p class="form-control-static">*</p>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.edtaTubeId.$valid, 'has-error': editLinkingForm.edtaTubeId.$invalid}">
+					<input type="text" class="form-control" name="edtaTubeId" id="edtaTube" ng-focus="setNextId('plasma1')" ng-keypress="retrieveEdtaTube($event)" ng-model="currentEdtaTube.edtaTubeId" ng-pattern="/^ET\d{6,6}$/" required="required" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['edtaTubeId'] && editLinkingForm.edtaTubeId.$dirty && editLinkingForm.edtaTubeId.$invalid">
+						<span ng-show="editLinkingForm.edtaTubeId.$error.required">Required</span>
+						<span ng-show="editLinkingForm.edtaTubeId.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['edtaTubeId']">
+						<span ng-show="currentEdtaTubeValidity['edtaTubeId'].duplicate">Duplicate Barcode</span>
+						<span ng-show="currentEdtaTubeValidity['edtaTubeId'].notFound">Not Found</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.remarks.$valid, 'has-error': editLinkingForm.remarks.$invalid}">
+					<input type="text" class="form-control" name="remarks" id="remarks" ng-focus="setNextId('plasma1')" ng-keypress="validateRemarks($event)" ng-model="currentEdtaTube.remarks" minlength="5" />
+					<span class="help-block" ng-show="editLinkingForm.remarks.$dirty && editLinkingForm.remarks.$invalid">
+						<span ng-show="editLinkingForm.remarks.$error.minlength">Minumum 5 characters required</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.plasma1.$valid && !currentEdtaTubeValidity['plasma1'], 'has-error': editLinkingForm.plasma1.$invalid || currentEdtaTubeValidity['plasma1']}">
+					<input type="text" class="form-control" name="plasma1" id="plasma1" ng-focus="setNextId('plasma2')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[0], currentEdtaTube.plasma, editLinkingForm.plasma1, 'plasma1')" ng-model="currentEdtaTube.plasma[0].cryovialId" ng-pattern="/^PC\d{6,6}$/" required="required" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['plasma1'] && editLinkingForm.plasma1.$dirty && editLinkingForm.plasma1.$invalid">
+						<span ng-show="editLinkingForm.plasma1.$error.required">Required</span>
+						<span ng-show="editLinkingForm.plasma1.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['plasma1']">
+						<span ng-show="currentEdtaTubeValidity['plasma1'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.plasma2.$valid && !currentEdtaTubeValidity['plasma2'], 'has-error': editLinkingForm.plasma2.$invalid || currentEdtaTubeValidity['plasma2']}">
+					<input type="text" class="form-control" name="plasma2" id="plasma2" ng-focus="setNextId('plasma3')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[1], currentEdtaTube.plasma, editLinkingForm.plasma2, 'plasma2')" ng-model="currentEdtaTube.plasma[1].cryovialId" ng-pattern="/^PC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['plasma2'] && editLinkingForm.plasma2.$dirty && editLinkingForm.plasma2.$invalid">
+						<span ng-show="editLinkingForm.plasma2.$error.required">Required</span>
+						<span ng-show="editLinkingForm.plasma2.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['plasma2']">
+						<span ng-show="currentEdtaTubeValidity['plasma2'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.plasma3.$valid && !currentEdtaTubeValidity['plasma3'], 'has-error': editLinkingForm.plasma3.$invalid || currentEdtaTubeValidity['plasma3']}">
+					<input type="text" class="form-control" name="plasma3" id="plasma3" ng-focus="setNextId('plasma4')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[2], currentEdtaTube.plasma, editLinkingForm.plasma3, 'plasma3')" ng-model="currentEdtaTube.plasma[2].cryovialId" ng-pattern="/^PC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['plasma3'] && editLinkingForm.plasma3.$dirty && editLinkingForm.plasma3.$invalid">
+						<span ng-show="editLinkingForm.plasma3.$error.required">Required</span>
+						<span ng-show="editLinkingForm.plasma3.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['plasma3']">
+						<span ng-show="currentEdtaTubeValidity['plasma3'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.plasma4.$valid && !currentEdtaTubeValidity['plasma4'], 'has-error': editLinkingForm.plasma4.$invalid || currentEdtaTubeValidity['plasma4']}">
+					<input type="text" class="form-control" name="plasma4" id="plasma4" ng-focus="setNextId('buffyCoat1')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[3], currentEdtaTube.plasma, editLinkingForm.plasma4, 'plasma4')" ng-model="currentEdtaTube.plasma[3].cryovialId" ng-pattern="/^PC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['plasma4'] && editLinkingForm.plasma4.$dirty && editLinkingForm.plasma4.$invalid">
+						<span ng-show="editLinkingForm.plasma4.$error.required">Required</span>
+						<span ng-show="editLinkingForm.plasma4.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['plasma4']">
+						<span ng-show="currentEdtaTubeValidity['plasma4'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.buffyCoat1.$valid && !currentEdtaTubeValidity['buffyCoat1'], 'has-error': editLinkingForm.buffyCoat1.$invalid || currentEdtaTubeValidity['buffyCoat1']}">
+					<input type="text" class="form-control" name="buffyCoat1" id="buffyCoat1" ng-focus="setNextId('buffyCoat2')" ng-keypress="validateCryovial($event, currentEdtaTube.buffyCoat[0], currentEdtaTube.buffyCoat, editLinkingForm.buffyCoat1, 'buffyCoat1')" ng-model="currentEdtaTube.buffyCoat[0].cryovialId" ng-pattern="/^BC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['buffyCoat1'] && editLinkingForm.buffyCoat1.$dirty && editLinkingForm.buffyCoat1.$invalid">
+						<span ng-show="editLinkingForm.buffyCoat1.$error.required">Required</span>
+						<span ng-show="editLinkingForm.buffyCoat1.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['buffyCoat1']">
+						<span ng-show="currentEdtaTubeValidity['buffyCoat1'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.buffyCoat2.$valid && !currentEdtaTubeValidity['buffyCoat2'], 'has-error': editLinkingForm.buffyCoat2.$invalid || currentEdtaTubeValidity['buffyCoat2']}">
+					<input type="text" class="form-control" name="buffyCoat2" id="buffyCoat2" ng-focus="setNextId('rbc')" ng-keypress="validateCryovial($event, currentEdtaTube.buffyCoat[1], currentEdtaTube.buffyCoat, editLinkingForm.buffyCoat2, 'buffyCoat2')" ng-model="currentEdtaTube.buffyCoat[1].cryovialId" ng-pattern="/^BC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['buffyCoat2'] && editLinkingForm.buffyCoat2.$dirty && editLinkingForm.buffyCoat2.$invalid">
+						<span ng-show="editLinkingForm.buffyCoat2.$error.required">Required</span>
+						<span ng-show="editLinkingForm.buffyCoat2.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['buffyCoat2']">
+						<span ng-show="currentEdtaTubeValidity['buffyCoat2'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': editLinkingForm.rbc.$valid && !currentEdtaTubeValidity['rbc'], 'has-error': editLinkingForm.rbc.$invalid || currentEdtaTubeValidity['rbc']}">
+					<input type="text" class="form-control" name="rbc" id="rbc" ng-focus="setNextId('edtaTube')" ng-keypress="validateCryovialAndSubmit($event, currentEdtaTube.rbc[0], currentEdtaTube.rbc, editLinkingForm.rbc, 'rbc')" ng-model="currentEdtaTube.rbc[0].cryovialId" ng-pattern="/^RC\d{6,6}$/" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity['rbc'] && editLinkingForm.rbc.$dirty && editLinkingForm.rbc.$invalid">
+						<span ng-show="editLinkingForm.rbc.$error.required">Required</span>
+						<span ng-show="editLinkingForm.rbc.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity['rbc']">
+						<span ng-show="currentEdtaTubeValidity['rbc'].duplicate">Duplicate Barcode</span>
+					</span>
+				</td>
+			</tr>
+			<tr  ng-repeat="edtaTube in edtaTubes">
+				<td ng-bind="edtaTubes.length - edtaTubes.indexOf(edtaTube)"></td>
+				<td ng-bind="edtaTube.edtaTubeId"></td>
+				<td ng-bind="edtaTube.remarks"></td>
+				<td ng-bind="edtaTube.plasma[0].cryovialId"></td>
+				<td ng-bind="edtaTube.plasma[1].cryovialId"></td>
+				<td ng-bind="edtaTube.plasma[2].cryovialId"></td>
+				<td ng-bind="edtaTube.plasma[3].cryovialId"></td>
+				<td ng-bind="edtaTube.buffyCoat[0].cryovialId"></td>
+				<td ng-bind="edtaTube.buffyCoat[1].cryovialId"></td>
+				<td ng-bind="edtaTube.rbc[0].cryovialId"></td>
+			</tr>
+		</table>
+	</div>
+	</fieldset>
+</div>
