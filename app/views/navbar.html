@@ -13,12 +13,20 @@
         <li ng-repeat="item in menu" ng-class="{active: isActive(item.link)}">
             <a ng-href="{{item.link}}">{{item.title}}</a>
         </li>
+	<li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reports <span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+	    <li ng-repeat="item in reports">
+	      <a ng-href="{{item.link}}">{{item.title}}</a>
+	    </li>
+	  </ul>
+	</li>
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-hide="isLoggedIn()" ng-class="{active: isActive('#/signup')}"><a href="/signup">Sign up</a></li>
         <li ng-hide="isLoggedIn()" ng-class="{active: isActive('#/login')}"><a href="#/login">Login</a></li>
         <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
+	<li ng-show="isLoggedIn()" ng-class="{active: isActive('#/synchronize')}"><a href="#/synchronize" >Synchronize</a></li>
         <li ng-show="isAdmin()" ng-class="{active: isActive('#/users')}"><a href="#/users"><span class="glyphicon glyphicon-cog"></span></a></li>
         <li ng-show="isLoggedIn()" ng-class="{active: isActive('#/login')}"><a href="#/login" >Logout</a></li>
       </ul>

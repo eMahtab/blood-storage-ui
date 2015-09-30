@@ -1,0 +1,23 @@
+<div ng-include="'./views/navbar.html'"></div>
+
+<div class="col-md-12">
+	<div class="modal fade" id="synchronizeDialog" tabindex="-1" role="dialog" aria-labelledby="synchronizeDialogLabel">
+		<div class="modal-dialog modal-md" role="document" data-backdrop="static" data-keyboard="false">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="synchronizeDialogLabel" style="text-align: center">
+						<span ng-show="busy">Synchronization in progress</span>
+						<span ng-show="error">Synchronization failed. Please check internet connection and try again.</span>
+						<span ng-show="complete">Synchronization completed successfully.</span>
+					</h4>
+				</div>
+				<div class="modal-body" style="min-height: 250px">
+					<div ng-show="error" class="alert alert-danger">{{error}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4 col-md-offset-4" style="text-align: center">
+		<a href="" class="btn btn-success" ng-click="doSynchronize()">Synchronize</a>
+	</div>
+</div>

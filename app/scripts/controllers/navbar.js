@@ -27,7 +27,7 @@ angular.module('ishaLogisticsApp').controller('NavbarCtrl', function ($scope,$lo
 	
 	$scope.reports = [{
 		'title': 'Locate Cryovial',
-		'link': '#/locateCryovial'
+		'link': '#/locate-cryovial'
 	}];
 
 	$scope.isCollapsed = true;

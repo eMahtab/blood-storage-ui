@@ -17,7 +17,7 @@
 				<td ng-bind="user.username"></td>
 				<td ng-bind="user.role==='manager'?'Administrator':'Lab Staff'"></td>
 				<td><a href="#/create-user/{{ user.username }}"><span class="glyphicon glyphicon-cog"></span></a></td>
-				<td><a href="" ng-click="removeUser(user.username)" ng-show="getCurrentUser().username !== user.username"><span class="glyphicon glyphicon-remove" style="color: red"></span></a></td>
+				<td><a href="" ng-click="removeUser(user.id)" ng-show="getCurrentUser().username !== user.username"><span class="glyphicon glyphicon-remove" style="color: red"></span></a></td>
 			</tr>
 		</table>
 	</div>

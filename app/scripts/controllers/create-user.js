@@ -25,10 +25,10 @@ angular.module('ishaLogisticsApp').controller('CreateUserCtrl', function ($scope
 	}
 	
 	if($routeParams.username) {
-		var retrieveUserPromise =$http.get(httpUrls.user+ $routeParams.username);
+		var retrieveUserPromise =$http.get(httpUrls.user + 'username/' + $routeParams.username);
 		
 		retrieveUserPromise.success(function(userData) {
-			$scope.createUserFormInput = userData;
+			$scope.createUserFormInput = userData[0];
 			$scope.createUserFormInput.password = null;
 		});
 		
@@ -49,10 +49,10 @@ angular.module('ishaLogisticsApp').controller('CreateUserCtrl', function ($scope
 			$scope.error = false;
 			$scope.created = false;
 			// TODO: Check if user already exists
-			var retrieveUserPromise = $http.get(httpUrls.user + $scope.createUserFormInput.username);
+			var retrieveUserPromise = $http.get(httpUrls.user + 'username/' + $scope.createUserFormInput.username);
 			
 			retrieveUserPromise.success(function(userData) {
-				if(!$scope.username && userData.username === $scope.createUserFormInput.username) {
+				if(!$scope.username && userData.length > 0 && userData.username === $scope.createUserFormInput.username) {
 					console.log('User Exists');
 					$scope.busy = false;
 					$scope.error = 'Username ' + $scope.createUserFormInput.username + ' already exists';

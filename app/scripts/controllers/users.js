@@ -40,10 +40,10 @@ angular.module('ishaLogisticsApp').controller('UsersCtrl', function ($scope,$htt
 	
 	retrieveUsers();
 	
-	$scope.removeUser = function(username) {
-		if(username) {
+	$scope.removeUser = function(id) {
+		if(id) {
 			console.log('Removing user');
-			var deleteUserPromise = $http.delete(httpUrls.user + username);
+			var deleteUserPromise = $http.delete(httpUrls.user + id);
 			
 			deleteUserPromise.success(function() {
 				retrieveUsers();

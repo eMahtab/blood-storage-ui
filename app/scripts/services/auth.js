@@ -11,7 +11,7 @@ angular.module('ishaLogisticsApp').factory('Auth', function ($http) {
 	var currentUser = null;
 	
 	var httpUrls = {
-		user: 'http://localhost:8080/services/api/entity/user/'
+		user: 'http://localhost:8080/services/api/entity/user/username/'
 	};
 	
 	var isLoggedIn = function() {
@@ -36,8 +36,8 @@ angular.module('ishaLogisticsApp').factory('Auth', function ($http) {
 		var loginPromise = $http.get(httpUrls.user + credentials.username);
 		
 		loginPromise.success(function(userObjectData, status) {
-			if(status===200  && userObjectData.password === credentials.password) {
-				currentUser = userObjectData;
+			if(status===200  && userObjectData.length>0 && userObjectData[0].password === credentials.password) {
+				currentUser = userObjectData[0];
 				if(successCallback) {
 					successCallback();
 				}

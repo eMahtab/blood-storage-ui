@@ -81,6 +81,11 @@ angular
         controller: 'UsersCtrl',
         controllerAs: 'users'
       })
+      .when('/synchronize', {
+        templateUrl: 'views/synchronize.html',
+        controller: 'SynchronizeCtrl',
+        controllerAs: 'synchronize'
+      })
       .otherwise({
         redirectTo: '/'
       });
