@@ -37,8 +37,6 @@ angular.module('ishaLogisticsApp').controller('LocateCryovialCtrl', function ($s
 			return;
 		}
 		
-		$scope.location = {};
-		
 		// Retrieve Cryovial
 		var retrieveCryovialPromise = $http.get(httpUrls.cryovial + $scope.locateCryovialFormInput.cryovialId);
 		
@@ -48,6 +46,8 @@ angular.module('ishaLogisticsApp').controller('LocateCryovialCtrl', function ($s
 				$scope.locateCryovialFormInputValidity = {notFound: true};
 				return;
 			}
+			
+			$scope.location = {};
 			
 			$scope.location.edtaTubeId = data.edtaTubeId;
 			$scope.location.cryovialId = data.cryovialId;

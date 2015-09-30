@@ -15,6 +15,9 @@
 									<span ng-show="locateCryovialForm.cryovialId.$error.required">Required</span>
 									<span ng-show="locateCryovialForm.cryovialId.$error.pattern">Invalid Barcode</span>
 								</span>
+								<span class="help-block" ng-show="locateCryovialFormInputValidity">
+									<span ng-show="locateCryovialFormInputValidity.notFound">Cryovial Not Found</span>
+								</span>
 							</div>
 						</div>
 					</form>
