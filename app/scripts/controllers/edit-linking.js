@@ -7,12 +7,16 @@
  * # EditLinkingCtrl
  * Controller of the ishaLogisticsApp
  */
-angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scope, $timeout, $http, $q) {
+angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scope, $timeout, $http, $q, $location, Auth) {
 	this.awesomeThings = [
 		'HTML5 Boilerplate',
 		'AngularJS',
 		'Karma'
 	];
+	
+	if(!Auth.isLoggedIn()) {
+		$location.path('/login');
+	}
 	
 	var httpUrls = {
 		linking: 'http://localhost:8080/services/api/entity/cryovial/edtaTubeId/',
@@ -44,7 +48,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					callback(event);
 				}
 				return;
-			};
+			}
 			
 			for(var i=0; i<parentModel.length; i++) {
 				if(parentModel[i] !== model && parentModel[i].cryovialId === model.cryovialId) {
@@ -54,8 +58,6 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					return false;
 				}
 			}
-			
-			var url = '/api/links/' + (model.cryovialType==='Plasma' ? 'plasma' : (model.cryovialType==='BuffyCoat' ? 'buffyCoat' : 'rbc'));
 			
 			var httpPromise = $http.get(httpUrls.cryovial + '/' + model.cryovialId);
 			
@@ -72,7 +74,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 				model.cryovialId = null;
 			};
 			
-			httpPromise.success(function(data, status) {
+			httpPromise.success(function(data) {
 				if(model.cryovialId !== data.cryovialId || data.edtaTubeId === $scope.currentEdtaTube.edtaTubeId) {
 					validCallback();
 				} else {
@@ -100,7 +102,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 			var httpPromise = $http.get(httpUrls.linking+ $scope.currentEdtaTube.edtaTubeId);
 			
 			httpPromise.success(function(data) {
-				if(data.length == 0) {
+				if(data.length === 0) {
 					console.log('not found');
 					$scope.currentEdtaTube.edtaTubeId = null;
 					$scope.editLinkingForm.$setPristine();
@@ -117,13 +119,13 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 				$scope.currentEdtaTube.rbc = [];
 				
 				for(var i=0; i<data.length; i++) {
-					if(data[i].cryovialType == 'Plasma') {
+					if(data[i].cryovialType === 'Plasma') {
 						$scope.retrievedEdtaTube.cryovials.push(data[i].cryovialId);
 						$scope.currentEdtaTube.plasma.push({cryovialId: data[i].cryovialId, cryovialType: data[i].cryovialType});
-					} else if(data[i].cryovialType == 'BuffyCoat') {
+					} else if(data[i].cryovialType === 'BuffyCoat') {
 						$scope.retrievedEdtaTube.cryovials.push(data[i].cryovialId);
 						$scope.currentEdtaTube.buffyCoat.push({cryovialId: data[i].cryovialId, cryovialType: data[i].cryovialType});
-					} else if(data[i].cryovialType == 'RBC') {
+					} else if(data[i].cryovialType === 'RBC') {
 						$scope.retrievedEdtaTube.cryovials.push(data[i].cryovialId);
 						$scope.currentEdtaTube.rbc.push({cryovialId: data[i].cryovialId, cryovialType: data[i].cryovialType});
 					}
@@ -144,7 +146,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 				$scope.transitionOnEnter(event);
 			});
 			
-			httpPromise.error(function(data, status) {
+			httpPromise.error(function() {
 				console.error('Problem');
 			});
 		}
@@ -218,7 +220,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					cryovial.edtaTubeId = editedEdtaTube.edtaTubeId;
 					cryovial.remarks = editedEdtaTube.remarks;
 					cryovial.cryovialId = editedEdtaTube.cryovials[i];
-					cryovial.cryovialType = (cryovial.cryovialId.indexOf('PC')==0 ? 'Plasma' : (cryovial.cryovialId.indexOf('BC')==0 ? 'BuffyCoat': 'RBC'));
+					cryovial.cryovialType = (cryovial.cryovialId.indexOf('PC')===0 ? 'Plasma' : (cryovial.cryovialId.indexOf('BC')===0 ? 'BuffyCoat': 'RBC'));
 					promises.push($http.post(httpUrls.cryovial, cryovial));
 				}
 			}

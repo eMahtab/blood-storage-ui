@@ -8,12 +8,16 @@
  * Controller of the ishaLogisticsApp
  */
 
-angular.module('ishaLogisticsApp').controller('LinkingCtrl', function ($scope, $timeout, $http, $q) {
+angular.module('ishaLogisticsApp').controller('LinkingCtrl', function ($scope, $timeout, $http, $q, $location, Auth) {
 	this.awesomeThings = [
 		'HTML5 Boilerplate',
 		'AngularJS',
 		'Karma'
 	];
+	
+	if(!Auth.isLoggedIn()) {
+		$location.path('/login');
+	}
 	
 	var httpUrls = {
 		linking: 'http://localhost:8080/services/api/entity/cryovial/edtaTubeId/',
@@ -38,7 +42,7 @@ angular.module('ishaLogisticsApp').controller('LinkingCtrl', function ($scope, $
 					callback(event);
 				}
 				return;
-			};
+			}
 			for(var i=0; i<parentModel.length; i++) {
 				if(parentModel[i] !== model && parentModel[i].cryovialId === model.cryovialId) {
 					$scope.currentEdtaTubeValidity[currentEdtaTubeValidityField] = 'duplicate';

@@ -8,10 +8,14 @@
  * Controller of the ishaLogisticsApp
  */
 angular.module('ishaLogisticsApp')
-  .controller('MainCtrl', function () {
+  .controller('MainCtrl', function ($location, Auth) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+	  
+	if(!Auth.isLoggedIn()) {
+		$location.path('/login');
+	}
   });

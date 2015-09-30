@@ -1,0 +1,88 @@
+<div ng-include="'views/navbar.html'"></div>
+
+<div class="col-md-12">
+	<legend style="text-align: center">Cryovial Packing</legend>
+	
+	<div class="col-md-4 col-md-offset-4">
+		<a href="#/add-box" ng-show="!currentCryovialBox"><span class="glyphicon glyphicon-plus"></span> Add New Box</a>
+		<div class="panel panel-default" ng-show="!currentCryovialBox">
+			<div class="panel-heading">Open Cryovial Box</div>
+			
+			<div class="panel-body">
+				<form name="openCryovialBoxForm" novalidate="novalidate">
+					<div class="form-group" ng-class="{'has-success':  openCryovialBoxForm.cryovialBoxId.$valid && !openCryovialBoxFormInputValidity.notFound, 'has-error': openCryovialBoxForm.cryovialBoxId.$invalid || openCryovialBoxFormInputValidity.notFound}">
+						<input type="text" class="form-control" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" ng-model="openCryovialBoxFormInput.cryovialBoxId" ng-keypress="openCryovialBox($event)" ng-show="!currentCryovialBox.items || currentCryovialBox.items.length < 100" required="required" pattern="^[PBR]B\d{6,6}$" />
+						<p style="form-control-static" ng-show="currentCryovialBox.items && currentCryovialBox.items.length >= 100"></p>
+						<span class="help-block" ng-show="!openCryovialBoxFormInputValidity.notFound && openCryovialBoxForm.cryovialBoxId.$invalid">
+							<span ng-show="openCryovialBoxForm.cryovialBoxId.$error.pattern">Invalid Barcode</span>
+						</span>
+						<span class="help-block" ng-show="openCryovialBoxFormInputValidity.notFound">
+							Not Found
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-md-12">
+		<div class="panel panel-default" ng-class="{'panel-danger': placeCryovialFormValidity, 'panel-default': !placeCryovialFormValidity}" ng-show="currentCryovialBox">
+			<div class="panel-heading" style="text-align: center">
+				<button type="button" class="close" aria-label="Close" ng-click="closeCryovialBox()"><span aria-hidden="true">&times;</span></button>
+				{{ currentCryovialBox.cryovialBoxId }} - {{ currentCryovialBox.cryovialType }}
+			</div>
+			<div class="panel-body" ng-class="{'danger': placeCryovialFormValidity}">
+				<div class="col-sm-12">
+					<div class="col-md-2 col-md-offset-5">
+						<form name="placeCryovialForm" novalidate="novalidate">
+							<div class="form-group" ng-class="{'has-success': placeCryovialForm.cryovialId.$valid && !placeCryovialFormValidity, 'has-error': placeCryovialForm.cryovialId.$invalid || placeCryovialFormValidity}">
+								<input type="text" class="form-control" id="cryovialId" name="cryovialId" placeholder="Scan Cryovial" ng-model="placeCryovialFormInput.cryovialId" ng-keypress="placeCryovial($event)" required="required" pattern="^[PBR]C\d{6,6}$"/>
+								<span class="help-block" ng-show="placeCryovialForm.cryovialId.$invalid && !placeCryovialFormValidity">
+									<span ng-show="placeCryovialForm.cryovialId.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="placeCryovialFormValidity" style="color: white; font-weight: bold">
+									<span ng-show="placeCryovialFormValidity.type">Cryovial is not the correct type</span>
+									<span ng-show="placeCryovialFormValidity.packed">Cryovial already packed</span>
+									<span ng-show="placeCryovialFormValidity.notLinked">Cryovial not linked</span>
+									<span ng-show="placeCryovialFormValidity.duplicateEdta">Box contains cryovial from same EDTA</span>
+									<span ng-show="placeCryovialFormValidity.boxFull">Box is full</span>
+									<span ng-show="placeCryovialFormValidity.formInvalid">Invalid Barcode</span>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="col-sm-6">
+						<div class="panel panel-default">
+							<table class="table">
+								<tr>
+									<th>Position</th>
+									<th>Cryovial</th>
+								</tr>
+								<tr ng-repeat="item in [] | range:currentCryovialBoxItems.length">
+									<td ng-bind="getChar(Math.floor((currentCryovialBoxItems.length - item - 1) / 10) + 65) + ((currentCryovialBoxItems.length - item - 1) % 10 + 1)"></td>
+									<td ng-bind="currentCryovialBoxItemMap[Math.floor((currentCryovialBoxItems.length - item - 1) / 10)][(currentCryovialBoxItems.length - item - 1) % 10]">&nbsp;</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="panel panel-default" style="width: 430px">
+							<table class="table">
+								<tr>
+									<th>#</th>
+									<th ng-repeat="column in [] | range:10" ng-bind="column + 1"></th>
+								</tr>
+								<tr ng-repeat="row in [] | range:10">
+									<th ng-bind="getChar(65 + row)"></th>
+									<td ng-repeat="column in [] | range: 10"><span class="glyphicon glyphicon-ok-circle" style="color: green" ng-show="currentCryovialBoxItemMap[row][column]"></span></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

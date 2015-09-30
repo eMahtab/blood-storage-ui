@@ -1,0 +1,63 @@
+<div ng-include="'./views/navbar.html'"></div>
+
+<div class="col-md-12">
+	<div ng-show="error" class="alert alert-danger">{{error}}</div>
+	<div ng-show="created" class="alert alert-success"><span style="font-weight: bold">Success! </span>User with username {{ createUserFormInput.username }} {{ username?'saved':'created' }} successfully. <a href="#/users">Click here </a> to go back.</div>
+	<form class="form-horizontal" name="createUserForm" novalidate="novalidate">
+		<legend style="text-align: center">Create User</legend>
+		
+		<fieldset ng-disabled="created || busy">
+			<div class="form-group">
+				<label for="name" class="col-sm-3 col-sm-offset-2 control-label">Name</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="name" name="name" placeholder="Name" required="required" ng-model="createUserFormInput.name">
+					<span class="help-block" ng-show="createUserForm.name.$dirty && createUserForm.name.$invalid">
+						<span ng-show="createUserForm.name.$error.required">Required</span>
+					</span>
+				</div>
+				
+			</div>
+			<div class="form-group">
+				<label for="username" class="col-sm-3 col-sm-offset-2 control-label">Username</label>
+				<div class="col-sm-3">
+					<input type="text" class="form-control" id="username" name="username" placeholder="Username" required="required" ng-model="createUserFormInput.username" minlength="4" ng-show="!username" />
+					<p class="form-control-static" ng-bind="username" ng-show="username"></p>
+					<span class="help-block" ng-show="createUserForm.username.$dirty && createUserForm.username.$invalid">
+						<span ng-show="createUserForm.username.$error.required">Required</span>
+						<span ng-show="createUserForm.username.$error.minlength">Username should contain at least four characters</span>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-sm-3 col-sm-offset-2 control-label">Password</label>
+				<div class="col-sm-3">
+					<input type="password" class="form-control" id="password" name="password" placeholder="Password" required="required" ng-model="createUserFormInput.password" />
+					<span class="help-block" ng-show="createUserForm.password.$dirty && createUserForm.password.$invalid">
+						<span ng-show="createUserForm.password.$error.required">Required</span>
+						<span ng-show="createUserForm.password.$error.pattern">Invalid Barcode</span>
+					</span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="password" class="col-sm-3 col-sm-offset-2 control-label">Role</label>
+				<div class="col-sm-3">
+					<div class="radio">
+						<label>
+							<input type="radio" name="role" id="userRoleInput" value="user" required="required" ng-model="createUserFormInput.role" />
+							Staff
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="role" id="managerRoleInput" value="manager" required="required" ng-model="createUserFormInput.role" />
+							Administrator
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" style="text-align: center">
+				<button class="btn btn-default" ng-disabled="createUserForm.$invalid" ng-click="doCreateUser()">{{ username?'Save':'Create' }}</button>
+			</div>
+		</fieldset>
+	</form>
+</div>

@@ -1,0 +1,45 @@
+<div ng-include="'./views/navbar.html'"></div>
+
+<div class="col-md-12">
+	<legend style="text-align:center">Locate Cryovial</legend>
+	<div class="col-sm-12">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-horizontal" name="locateCryovialForm" novalidate="novalidate">
+						<div class="form-group">
+							<label for="cryovialId" class="col-sm-4 control-label">Cryovial ID</label>
+							<div class="col-sm-6">
+								<input type="text" class="form-control" id="cryovialId" name="cryovialId" placeholder="Scan Cryovial" required="required" pattern="^[PBR]C\d{6,6}$" ng-model="locateCryovialFormInput.cryovialId" ng-keypress="retrieveCryovial($event)">
+								<span class="help-block" ng-show="locateCryovialForm.cryovialId.$dirty && locateCryovialForm.cryovialId.$invalid">
+									<span ng-show="locateCryovialForm.cryovialId.$error.required">Required</span>
+									<span ng-show="locateCryovialForm.cryovialId.$error.pattern">Invalid Barcode</span>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+				<table class="table" ng-show="location">
+					<tr>
+						<th>EDTA Tube</th>
+						<th>Cryovial ID</th>
+						<th>Cryovial Type </th>
+						<th>Freezer Unit</th>
+						<th>Freezer Rack</th>
+						<th>Box Id</th>
+						<th>Box Position</th>
+					</tr>
+					<tr>
+						<td ng-bind="location.edtaTubeId"></th>
+						<td ng-bind="location.cryovialId"></th>
+						<td ng-bind="location.cryovialType"></th>
+						<td ng-bind="location.freezerUnitId"></th>
+						<td ng-bind="location.freezerRackId"></th>
+						<td ng-bind="location.cryovialBoxId"></th>
+						<td ng-bind="getChar(65 + location.cryovialBoxRow) + (location.cryovialBoxColumn + 1)"></th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

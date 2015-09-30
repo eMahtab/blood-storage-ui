@@ -1,0 +1,82 @@
+<div ng-include="'views/navbar.html'"></div>
+
+<div class="col-md-12">
+	<form class="form-horizontal" name="addFreezerForm" novalidate="novalidate">
+		<div class="alert alert-success" role="alert" ng-show="created"><span style="font-weight: bold">Freezer Unit Added!</span> Freezer Unit {{ addFreezerFormInput.freezerId }} has been added. <a href="#/storage">Click Here to go back to Storage</a></div>
+		<legend style="text-align: center">Add Freezer</legend>
+		<fieldset ng-disabled="created">
+			<div class="col-md-4 col-md-offset-4">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="form-group" ng-class="{'has-success': addFreezerForm.freezerId.$valid && addFreezerFormInputValidity.freezerId == 'OK', 'has-error': addFreezerForm.freezerId.$invalid || addFreezerFormInputValidity.freezerId != 'OK'}">
+							<label for="freezerId" class="col-sm-3 control-label">Freezer ID</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="freezerId" name="freezerId" placeholder="Scan Freezer" required="required" pattern="^FZ\d{6,6}$" ng-focus="setNextId('rack0')" ng-keypress="validateFreezerId($event)" ng-model="addFreezerFormInput.freezerId">
+								<span class="help-block" ng-show="addFreezerForm.freezerId.$dirty && addFreezerForm.freezerId.$invalid && (!addFreezerFormInputValidity.freezerId)">
+									<span ng-show="addFreezerForm.freezerId.$error.required">Required</span>
+									<span ng-show="addFreezerForm.freezerId.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="addFreezerFormInputValidity.freezerId != 'OK'">
+									<span ng-show="addFreezerFormInputValidity.freezerId=='duplicate'">Duplicate Barcode</span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="form-group" ng-class="{'has-success': addFreezerForm.rack0.$valid && addFreezerFormInputValidity.rack0 == 'OK', 'has-error': addFreezerForm.rack0.$invalid || addFreezerFormInputValidity.rack0 != 'OK'}">
+							<label for="rack0" class="col-sm-3 control-label">Rack 1</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="rack0" name="rack0" placeholder="Scan First Rack" required="required" pattern="^FR\d{6,6}$" ng-focus="setNextId('rack1')" ng-keypress="validateFreezerRack($event, addFreezerForm.rack0, addFreezerFormInput.racks[0], 'rack0')" ng-model="addFreezerFormInput.racks[0].freezerRackId">
+								<span class="help-block" ng-show="addFreezerForm.rack0.$dirty && addFreezerForm.rack0.$invalid && (!addFreezerFormInputValidity.rack0)">
+									<span ng-show="addFreezerForm.rack0.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="addFreezerFormInputValidity.rack0 != 'OK'">
+									<span ng-show="addFreezerFormInputValidity.rack0=='duplicate'">Duplicate Barcode</span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group" ng-class="{'has-success': addFreezerForm.rack1.$valid && addFreezerFormInputValidity.rack1 == 'OK', 'has-error': addFreezerForm.rack1.$invalid || addFreezerFormInputValidity.rack1 != 'OK'}">
+							<label for="rack1" class="col-sm-3 control-label">Rack 2</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="rack1" name="rack1" placeholder="Scan Second Rack"  required="required" pattern="^FR\d{6,6}$" ng-focus="setNextId('rack2')" ng-keypress="validateFreezerRack($event, addFreezerForm.rack1, addFreezerFormInput.racks[1], 'rack1')" ng-model="addFreezerFormInput.racks[1].freezerRackId">
+								<span class="help-block" ng-show="addFreezerForm.rack1.$dirty && addFreezerForm.rack1.$invalid && (!addFreezerFormInputValidity.rack1)">
+									<span ng-show="addFreezerForm.rack1.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="addFreezerFormInputValidity.rack1 != 'OK'">
+									<span ng-show="addFreezerFormInputValidity.rack1=='duplicate'">Duplicate Barcode</span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group" ng-class="{'has-success': addFreezerForm.rack2.$valid && addFreezerFormInputValidity.rack2 == 'OK', 'has-error': addFreezerForm.rack2.$invalid || addFreezerFormInputValidity.rack2 !== 'OK'}">
+							<label for="rack2" class="col-sm-3 control-label">Rack 3</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="rack2" name="rack2" placeholder="Scan Third Rack"  required="required" pattern="^FR\d{6,6}$" ng-focus="setNextId('rack3')" ng-keypress="validateFreezerRack($event, addFreezerForm.rack2, addFreezerFormInput.racks[2], 'rack2')" ng-model="addFreezerFormInput.racks[2].freezerRackId">
+								<span class="help-block" ng-show="addFreezerForm.rack2.$dirty && addFreezerForm.rack2.$invalid && (!addFreezerFormInputValidity.rack2)">
+									<span ng-show="addFreezerForm.rack2.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="addFreezerFormInputValidity.rack2 != 'OK'">
+									<span ng-show="addFreezerFormInputValidity.rack2=='duplicate'">Duplicate Barcode</span>
+								</span>
+							</div>
+						</div>
+						<div class="form-group" ng-class="{'has-success': addFreezerForm.rack3.$valid && addFreezerFormInputValidity.rack3 == 'OK', 'has-error': addFreezerForm.rack3.$invalid || addFreezerFormInputValidity.rack3 != 'OK'}">
+							<label for="rack3" class="col-sm-3 control-label">Rack 4</label>
+							<div class="col-sm-9">
+								<input type="text" class="form-control" id="rack3" name="rack3" placeholder="Scan Second Rack"  required="required" pattern="^FR\d{6,6}$" ng-keypress="validateFreezerRackAndSubmit($event, addFreezerForm.rack3, addFreezerFormInput.racks[3], 'rack3')" ng-model="addFreezerFormInput.racks[3].freezerRackId">
+								<span class="help-block" ng-show="addFreezerForm.rack3.$dirty && addFreezerForm.rack3.$invalid && (!addFreezerFormInputValidity.rack3)">
+									<span ng-show="addFreezerForm.rack3.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="addFreezerFormInputValidity.rack3 != 'OK'">
+									<span ng-show="addFreezerFormInputValidity.rack3=='duplicate'">Duplicate Barcode</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12" style="text-align: center">
+					<a class="btn btn-default" href="#/storage">Cancel</a>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

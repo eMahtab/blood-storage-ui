@@ -24,10 +24,12 @@ module.exports = function(config) {
       // bower:js
       'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
       'bower_components/angular-route/angular-route.js',
+      'bower_components/blueimp-md5/js/md5.js',
+      'bower_components/bootstrap/dist/js/bootstrap.js',
+      'bower_components/js-md5/js/md5.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

@@ -1,0 +1,74 @@
+<div ng-include="'views/navbar.html'"></div>
+<div class="col-sm-12">
+	<legend style="text-align: center">Storage</legend>
+	<div class="col-md-4 col-md-offset-4">
+		<a href="#/add-freezer" ng-show="!currentFreezerUnit"><span class="glyphicon glyphicon-plus"></span> Add New Freezer Unit</a>
+		<div class="panel panel-default" ng-show="!currentFreezerUnit">
+			<div class="panel-heading">Open Freezer Rack</div>
+			<div class="panel-body">
+				<form name="openFreezerRackForm" novalidate="novalidate">
+					<div class="form-group" ng-class="{ 'has-success': openFreezerRackForm.freezerRackId.$valid && !openFreezerRackFormInputValidity, 'has-error': openFreezerRackForm.freezerRackId.$invalid || openFreezerRackFormInputValidity }">
+						<input class="form-control" type="text" name="freezerRackId" id="freezerRackId" placeholder="Scan Rack" required="required" pattern="^FR\d{6,6}$" ng-model="openFreezerRackFormInput.freezerRackId" ng-keypress="openFreezerRack($event)" />
+						<span class="help-block" ng-show="!openFreezerRackFormInputValidity && openFreezerRackForm.freezerRackId.$dirty && openFreezerRackForm.freezerRackId.$invalid">
+							<span ng-show="openFreezerRackForm.freezerRackId.$error.required">Required</span>
+							<span ng-show="openFreezerRackForm.freezerRackId.$error.pattern">Invalid Barcode</span>
+						</span>
+						<span class="help-block" ng-show="openFreezerRackFormInputValidity">
+							<span ng-show="openFreezerRackFormInputValidity == 'notFound'">Freezer not found</span>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="panel" ng-class="{'panel-danger': placeCryovialBoxFormInputValidity, 'panel-default': !placeCryovialBoxFormInputValidity}" ng-show="currentFreezerUnit">
+			<div class="panel-heading" style="text-align: center">
+				<button type="button" class="close" aria-label="Close" ng-click="closeFreezer()"><span aria-hidden="true">&times;</span></button>
+				<span ng-bind="currentFreezerUnit.freezerId"></span>
+			</div>
+			<div class="panel-body" ng-class="{'danger': placeCryovialBoxFormInputValidity}">
+				<div class="col-md-12">
+					<div class="col-md-2 col-md-offset-5">
+						<form name="placeCryovialBoxForm" novalidate="novalidate">
+							<div class="form-group" ng-class="{'has-success': placeCryovialBoxForm.cryovialBoxId.$valid && !placeCryovialBoxFormInputValidity, 'has-error': placeCryovialBoxForm.cryovialBoxId.$invalid || placeCryovialBoxFormInputValidity}">
+								<input class="form-control" type="text" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" required="required" pattern="^[PBR]B\d{6,6}$" ng-model="placeCryovialBoxFormInput.cryovialBoxId" ng-keypress="placeCryovialBoxInFreezerRack($event)" />
+								<span class="help-block" ng-show="!placeCryovialBoxFormInputValidity && placeCryovialBoxForm.cryovialBoxId.$dirty && placeCryovialBoxForm.cryovialBoxId.$invalid">
+									<span ng-show="placeCryovialBoxForm.cryovialBoxId.$error.required">Required</span>
+									<span ng-show="placeCryovialBoxForm.cryovialBoxId.$error.pattern">Invalid Barcode</span>
+								</span>
+								<span class="help-block" ng-show="placeCryovialBoxFormInputValidity" style="color: white; font-weight: bold">
+									<span ng-show="placeCryovialBoxFormInputValidity == 'notFound'">Box Not Found</span>
+								</span>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="col-md-4 col-md-offset-1">
+						<div class="panel panel-default">
+							<div class="panel-heading" style="text-align: center">Freezer Unit - {{ currentFreezerUnit.freezerId }}</div>
+							<table class="table">
+								<tr ng-repeat="rack in currentFreezerUnit.racks">
+									<td style="text-align: center; font-size: small; height: 75px; vertical-align: middle" ng-class="{'success': rack.freezerRackId == openFreezerRackFormInput.freezerRackId}" ng-bind="rack.freezerRackId"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="col-md-6 col-md-offset-1">
+						<div class="panel panel-success">
+							<div class="panel-heading" style="text-align: center">Boxes Placed</div>
+							<table class="table">
+								<tr ng-repeat="cryovialBox in cryovialBoxesPlaced">
+									<td style="text-align: center">
+										{{ cryovialBox }}
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
