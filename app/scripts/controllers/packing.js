@@ -128,25 +128,34 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 					$scope.placeCryovialFormValidity = {duplicateEdta: true};
 					return;
 				}
+
+				console.log('currentCryovialBoxItemMap: ' + $scope.currentCryovialBoxItemMap);
 				
 				// Find empty location in box.
 				for(var row=0; row<10; row++) {
 					for(var column=0; column < 10; column++) {
+						console.log('row: ' + row + ' column: ' + column);
 						if(!$scope.currentCryovialBoxItemMap[row][column]) {
+							console.log('Is Empty');
 							data.cryovialBoxRow = row;
 							data.cryovialBoxColumn = column;
 							console.log('Cryovial Empty Location: [' + row + ',' + column + ']');
 							break;
+						} else {
+							console.log('Is Not Empty');
 						}
 					}
 					
-					if(typeof data.cryovialBoxRow !== 'undefined' && typeof data.cryovialBoxColumn !== 'undefined') {
+					if(data.cryovialBoxRow !== null && data.cryovialBoxColumn !== null) {
+						console.log('Breaking');
+						console.log('Row: ' + data.cryovialBoxRow);
+						console.log('Column: ' + data.cryovialBoxColumn);
 						break;
 					}
 				}
 				
 				// check if box is full
-				if(typeof data.cryovialBoxRow === 'undefined' && typeof data.cryovialBoxColumn === 'undefined') {
+				if(typeof data.cryovialBoxRow === 'undefined' || typeof data.cryovialBoxColumn === 'undefined') {
 					$scope.placeCryovialFormValidity = {boxFull: true};
 					return;
 				}

@@ -23,7 +23,6 @@ angular.module('ishaLogisticsApp').factory('Auth', function ($http) {
 	};
 	
 	var isAdmin = function() {
-		console.log('currentUser: ' + JSON.stringify(currentUser));
 		if(currentUser && currentUser.role==='manager') {
 			return true;
 		} else {

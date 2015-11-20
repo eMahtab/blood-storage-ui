@@ -86,6 +86,11 @@ angular
         controller: 'SynchronizeCtrl',
         controllerAs: 'synchronize'
       })
+      .when('/packing', {
+        templateUrl: 'views/packing.html',
+        controller: 'PackingCtrl',
+        controllerAs: 'packing'
+      })
       .otherwise({
         redirectTo: '/'
       });
