@@ -14,7 +14,12 @@ angular.module('ishaLogisticsApp').controller('NavbarCtrl', function ($scope,$lo
 		'Karma'
 	];
 	
-	$scope.menu = [{
+	$scope.menu = [
+    {
+		'title': 'Cryovial Combination',
+		'link': '#/combination'
+	},
+	{
 		'title': 'Linking',
 		'link': '#/linking'
 	}, {

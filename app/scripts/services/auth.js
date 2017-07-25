@@ -34,9 +34,17 @@ angular.module('ishaLogisticsApp').factory('Auth', function ($http) {
 		currentUser = null;
 		var loginPromise = $http.get(httpUrls.user + credentials.username);
 		
-		loginPromise.success(function(userObjectData, status) {
-			if(status===200  && userObjectData.length>0 && userObjectData[0].password === credentials.password) {
-				currentUser = userObjectData[0];
+		loginPromise.then(function(userObjectData) {
+			console.log(JSON.stringify(userObjectData));
+			//userObjectData=userObjectData.data
+			console.log(userObjectData.status);
+			console.log(userObjectData.data.length);
+			console.log(userObjectData.data[0].password);
+			if(userObjectData.status===200  && 
+				userObjectData.data.length>0 && 
+				userObjectData.data[0].password === credentials.password) {
+				currentUser = userObjectData.data;
+			    console.log("All clear");
 				if(successCallback) {
 					successCallback();
 				}
@@ -45,9 +53,8 @@ angular.module('ishaLogisticsApp').factory('Auth', function ($http) {
 					errorCallback();
 				}
 			}
-		});
-		
-		loginPromise.error(function() {
+		})
+		.catch(function() {
 			console.error('Problem');
 			if(errorCallback) {
 				errorCallback();

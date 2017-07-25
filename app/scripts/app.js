@@ -8,13 +8,14 @@
  *
  * Main module of the application.
  */
-angular
+var app=angular
   .module('ishaLogisticsApp', [
     'ngAnimate',
     'ngCookies',
     'ngRoute'
-  ])
-  .config(function ($routeProvider) {
+  ]);
+
+app.config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -91,7 +92,51 @@ angular
         controller: 'PackingCtrl',
         controllerAs: 'packing'
       })
+      .when('/combination',{
+        templateUrl: 'views/change-combination.html',
+        controller: 'CombinationCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
   });
+
+app.config(['$locationProvider', function($locationProvider) {
+       $locationProvider.hashPrefix('');
+}]);
+
+app.run(function($window){
+    console.log("ON Run block");
+    var store = $window.localStorage;
+    var combinations = {
+      "seven" : { "plasma": 4, "buffycoat": 1, "buffycoatRBC": 1, "rbc": 1,},
+      "six" :   { "plasma": 4, "buffycoat": 1, "buffycoatRBC": 1, "rbc": 0 },
+      "five" :  { "plasma": 3, "buffycoat": 1, "buffycoatRBC": 1, "rbc": 0 },
+      "four" :  { "plasma": 2, "buffycoat": 1, "buffycoatRBC": 1, "rbc": 0 },
+      "three" : { "plasma": 1, "buffycoat": 1, "buffycoatRBC": 1, "rbc": 0 },
+      "two" :   { "plasma": 1, "buffycoat": 1, "buffycoatRBC": 0, "rbc": 0 }
+    };
+    store.setItem('combinations',JSON.stringify(combinations));
+    store.setItem('defaultCryovialCombination',"seven");
+    store.setItem('currentCombination',JSON.stringify(combinations[ store.getItem('defaultCryovialCombination') ]));
+
+});
+
+app.directive('includeReplace', function () {
+    return {
+        require: 'ngInclude',
+        restrict: 'A', /* optional */
+        link: function (scope, el, attrs) {
+            console.log(attrs); 
+            el.replaceWith(el.children());
+        }
+    };
+});
+
+app.directive('sevenForm', function () {
+    return {        
+        restrict: 'EA', /* optional */
+        templateUrl: 'views/form7.html',
+        replace:'true'
+    };
+});

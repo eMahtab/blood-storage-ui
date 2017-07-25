@@ -80,7 +80,35 @@ body {
   }
 }
 
+.cryovialNumber{
+  font-size:30px;
+  font-style: italic;
+}
+
 .danger {
 	background-color: red;
 	color: #A94442;
+}
+
+.plasma{
+  color:black;
+  font-weight: bold;
+}
+
+.buffy{
+  color:#32CD32;
+  font-weight: bold;
+}
+
+.combination{
+  cursor:pointer;
+}
+.buffyRBC{
+  color:tomato;
+  font-weight: bold;
+}
+
+.rbc{
+  color:darkred;
+  font-weight: bold;
 }

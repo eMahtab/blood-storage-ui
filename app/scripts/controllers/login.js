@@ -33,6 +33,7 @@ angular.module('ishaLogisticsApp').controller('LoginCtrl', function ($scope, Aut
 		var loginCredentials = {};
 		loginCredentials.username = $scope.loginFormInput.username;
 		loginCredentials.password = md5($scope.loginFormInput.password);
+		console.log("Login Credentials "+JSON.stringify(loginCredentials));
 		//console.log('POSTing: ' + JSON.stringify(loginCredentials));
 		var successCallback = function() {
 			console.log('Auth.isLoggedIn: ' + Auth.isLoggedIn());
