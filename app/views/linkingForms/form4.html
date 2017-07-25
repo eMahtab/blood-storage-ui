@@ -1,0 +1,90 @@
+<table  class="table">		  
+			<tr>
+				<th>&nbsp;</th>
+				<th>EDTA Tube</th>
+				<th>Remarks</th>			
+				<th ng-repeat="pl in currentEdtaTube.plasma">
+                     Plasma {{$index+1}}
+				</th>
+				<th ng-repeat="bu in currentEdtaTube.buffyCoat">
+                     BuffyCoat
+				</th>
+				<th ng-repeat="br in currentEdtaTube.buffyCoatRBC">
+                     BuffyCoat + RBC
+				</th>				
+			</tr>			
+
+            <tr style="height: 85px" ng-form="linkingForm">
+				<td class="form-group">
+					<p class="form-control-static">*</p>
+				</td>
+				<td class="form-group" ng-class="{'has-success': linkingForm.edtaTubeId.$valid && currentEdtaTubeValidity.edtaTubeId == 'OK', 'has-error': linkingForm.edtaTubeId.$invalid || currentEdtaTubeValidity.edtaTubeId != 'OK'}">
+					<input type="text" class="form-control" name="edtaTubeId" id="edtaTube" 
+					       ng-focus="setNextId('plasma1')" ng-keypress="validateEdtaId($event)" 
+					ng-model="currentEdtaTube.edtaTubeId" pattern="^ET\d{6,6}$" required="required" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity.edtaTubeId && linkingForm.edtaTubeId.$dirty && linkingForm.edtaTubeId.$invalid">
+						<span ng-show="linkingForm.edtaTubeId.$error.required">Required</span>
+						<span ng-show="linkingForm.edtaTubeId.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity.edtaTubeId != 'OK'">
+						<span ng-show="currentEdtaTubeValidity.edtaTubeId=='duplicate'">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': linkingForm.remarks.$valid, 'has-error': linkingForm.remarks.$invalid}">
+					<input type="text" class="form-control" name="remarks" id="remarks" ng-focus="setNextId('plasma1')" ng-keypress="validateRemarks($event)" ng-model="currentEdtaTube.remarks" minlength="5" />
+					<span class="help-block" ng-show="linkingForm.remarks.$dirty && linkingForm.remarks.$invalid">
+						<span ng-show="linkingForm.remarks.$error.minlength">Minumum 5 characters required</span>
+					</span>
+				</td>
+
+                <td class="form-group" ng-class="{'has-success': linkingForm.plasma1.$valid && currentEdtaTubeValidity.plasma1 == 'OK', 'has-error': linkingForm.plasma1.$invalid || currentEdtaTubeValidity.plasma1 != 'OK'}">
+					<input type="text" class="form-control" name="plasma1" id="plasma1" ng-focus="setNextId('plasma2')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[0], currentEdtaTube.plasma, linkingForm.plasma1, 'plasma1')" ng-model="currentEdtaTube.plasma[0].cryovialId" pattern="^PC\d{6,6}$" required="required" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity.plasma1 && linkingForm.plasma1.$dirty && linkingForm.plasma1.$invalid">
+						<span ng-show="linkingForm.plasma1.$error.required">Required</span>
+						<span ng-show="linkingForm.plasma1.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity.plasma1 != 'OK'">
+						<span ng-show="currentEdtaTubeValidity.plasma1=='duplicate'">Duplicate Barcode</span>
+					</span>
+				</td>
+				<td class="form-group" ng-class="{'has-success': linkingForm.plasma2.$valid && currentEdtaTubeValidity.plasma2 == 'OK', 'has-error': linkingForm.plasma2.$invalid || currentEdtaTubeValidity.plasma2 != 'OK'}">
+					<input type="text" class="form-control" name="plasma2" id="plasma2" ng-focus="setNextId('buffyCoat1')" ng-keypress="validateCryovial($event, currentEdtaTube.plasma[1], currentEdtaTube.plasma, linkingForm.plasma2, 'plasma2')" ng-model="currentEdtaTube.plasma[1].cryovialId" pattern="^PC\d{6,6}$" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity.plasma2 && linkingForm.plasma2.$dirty && linkingForm.plasma2.$invalid">
+						<span ng-show="linkingForm.plasma2.$error.required">Required</span>
+						<span ng-show="linkingForm.plasma2.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity.plasma2 != 'OK'">
+						<span ng-show="currentEdtaTubeValidity.plasma2=='duplicate'">Duplicate Barcode</span>
+					</span>
+				</td>				
+				
+
+				<td class="form-group" ng-class="{'has-success': linkingForm.buffyCoat1.$valid && currentEdtaTubeValidity.buffyCoat1 == 'OK', 'has-error': linkingForm.buffyCoat1.$invalid || currentEdtaTubeValidity.buffyCoat1 != 'OK'}">
+					<input type="text" class="form-control" name="buffyCoat1" id="buffyCoat1" ng-focus="setNextId('buffyCoat2')" ng-keypress="validateCryovial($event, currentEdtaTube.buffyCoat[0], currentEdtaTube.buffyCoat, linkingForm.buffyCoat1, 'buffyCoat1')" ng-model="currentEdtaTube.buffyCoat[0].cryovialId" pattern="^BC\d{6,6}$" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity.buffyCoat1 && linkingForm.buffyCoat1.$dirty && linkingForm.buffyCoat1.$invalid">
+						<span ng-show="linkingForm.buffyCoat1.$error.required">Required</span>
+						<span ng-show="linkingForm.buffyCoat1.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity.buffyCoat1 != 'OK'">
+						<span ng-show="currentEdtaTubeValidity.buffyCoat1=='duplicate'">Duplicate Barcode</span>
+					</span>
+				</td>
+				
+				<td class="form-group" ng-class="{'has-success': linkingForm.buffyCoat2.$valid && currentEdtaTubeValidity.buffyCoat2 == 'OK', 'has-error': linkingForm.buffyCoat2.$invalid || currentEdtaTubeValidity.buffyCoat2 != 'OK'}">
+					<input type="text" class="form-control" name="buffyCoat2" id="buffyCoat2" ng-focus="setNextId('edtaTube')" ng-keypress="validateCryovialAndSubmit($event, currentEdtaTube.buffyCoatRBC[0], currentEdtaTube.buffyCoatRBC, linkingForm.buffyCoat2, 'buffyCoat2')" ng-model="currentEdtaTube.buffyCoatRBC[0].cryovialId" pattern="^BR\d{6,6}$" />
+					<span class="help-block" ng-show="!currentEdtaTubeValidity.buffyCoat2 && linkingForm.buffyCoat2.$dirty && linkingForm.buffyCoat2.$invalid">
+						<span ng-show="linkingForm.buffyCoat2.$error.required">Required</span>
+						<span ng-show="linkingForm.buffyCoat2.$error.pattern">Invalid Barcode</span>
+					</span>
+					<span class="help-block" ng-show="currentEdtaTubeValidity.buffyCoat2 != 'OK'">
+						<span ng-show="currentEdtaTubeValidity.buffyCoat2=='duplicate'">Duplicate Barcode</span>
+					</span>
+				</td>
+				
+</tr>				
+    
+</table>
+
+
+
+
