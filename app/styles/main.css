@@ -112,3 +112,11 @@ body {
   color:darkred;
   font-weight: bold;
 }
+
+.selectCombination{
+   border-width: thin;
+   border-color:gray;
+   border-style: solid; 
+   text-align: center
+
+}
