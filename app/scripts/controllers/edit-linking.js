@@ -119,11 +119,16 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					console.log('not found');
 					$scope.currentEdtaTube.edtaTubeId = null;
 					$scope.editLinkingForm.$setPristine();
+					$scope.currentEdtaTubeValidity.edtaTubeId = {};
 					$scope.currentEdtaTubeValidity.edtaTubeId.notFound = true;
 					return;
 				}else{
 					$scope.currentEdtaTube = {edtaTubeId: response.data[0].edtaTubeId, 
 						                      remarks: response.data[0].remarks};
+					$scope.retrievedEdtaTube = {edtaTubeId: response.data[0].edtaTubeId, 
+						                        remarks: response.data[0].remarks,
+					                            cryovials: [], plasma: [], buffyCoat: [], 
+					                            buffyCoatRBC: [], rbc: []};	                      
 				    $scope.currentEdtaTube.plasma = [];
 				    $scope.currentEdtaTube.buffyCoat = [];
 				    $scope.currentEdtaTube.buffyCoatRBC = [];
@@ -225,7 +230,9 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 		//Check all input fields are valid
 		console.log("EDTATube "+$scope.editLinkingForm.edtaTubeId.$valid)
 		console.log("Remarks "+$scope.editLinkingForm.remarks.$valid)
-		if(checkAllFields()) {
+		if($scope.editLinkingForm.edtaTubeId.$valid && 
+		   $scope.retrievedEdtaTube.edtaTubeId !== null &&	
+		   $scope.currentEdtaTube.plasma.length > 0 &&  checkAllFields()) {
 			console.log('Ready to update');
 			/*$scope.busy = true;
 			
@@ -295,61 +302,62 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 	};
 
 	function checkAllFields(){
+		console.log("Checking all fields");
         var i; 
-		for(i=0;i<$scope.retrievedEdtaTube.plasma.length;i++){
-           if( typeof($scope.currentEdtaTube.plasma[i]) !== 'undefined' &&
-           	   $scope.currentEdtaTube.plasma[i] !== null && 
-           	   $scope.currentEdtaTube.plasma[i].length === 8 &&
-           	   $scope.currentEdtaTube.plasma[i].startsWith('PC') &&
-           	   /^\d+$/.test($scope.currentEdtaTube.plasma[i].substring(2))){
-                ;
+		for(i=0;i<$scope.retrievedEdtaTube.plasma.length;i++){			
+           if( typeof($scope.currentEdtaTube.plasma[i].cryovialId) !== 'undefined' &&
+           	   $scope.currentEdtaTube.plasma[i].cryovialId !== null && 
+           	   $scope.currentEdtaTube.plasma[i].cryovialId.length === 8 &&
+           	   $scope.currentEdtaTube.plasma[i].cryovialId.startsWith('PC') &&
+           	   /^\d+$/.test($scope.currentEdtaTube.plasma[i].cryovialId.substring(2))){
+                console.log("Passed "+$scope.currentEdtaTube.plasma[i].cryovialId);
            }else{
            	return false;
            }
 		}
 
 		for(i=0;i<$scope.retrievedEdtaTube.buffyCoat.length;i++){
-           if( typeof($scope.currentEdtaTube.buffyCoat[i]) !== 'undefined' &&
-           	   $scope.currentEdtaTube.buffyCoat[i] !== null && 
-           	   $scope.currentEdtaTube.buffyCoat[i].length === 8 &&
-           	   $scope.currentEdtaTube.buffyCoat[i].startsWith('BC') &&
-           	   /^\d+$/.test($scope.currentEdtaTube.buffyCoat[i].substring(2))){
-                ;
+           if( typeof($scope.currentEdtaTube.buffyCoat[i].cryovialId) !== 'undefined' &&
+           	   $scope.currentEdtaTube.buffyCoat[i].cryovialId !== null && 
+           	   $scope.currentEdtaTube.buffyCoat[i].cryovialId.length === 8 &&
+           	   $scope.currentEdtaTube.buffyCoat[i].cryovialId.startsWith('BC') &&
+           	   /^\d+$/.test($scope.currentEdtaTube.buffyCoat[i].cryovialId.substring(2))){
+                console.log("Passed "+$scope.currentEdtaTube.buffyCoat[i].cryovialId);
            }else{
            	return false;
            }
 		}
 
 		for(i=0;i<$scope.retrievedEdtaTube.buffyCoatRBC.length;i++){
-           if( typeof($scope.currentEdtaTube.buffyCoatRBC[i]) !== 'undefined' &&
-           	   $scope.currentEdtaTube.buffyCoatRBC[i] !== null && 
-           	   $scope.currentEdtaTube.buffyCoatRBC[i].length === 8 &&
-           	   $scope.currentEdtaTube.buffyCoatRBC[i].startsWith('BR') &&
-           	   /^\d+$/.test($scope.currentEdtaTube.buffyCoatRBC[i].substring(2))){
-                ;
+           if( typeof($scope.currentEdtaTube.buffyCoatRBC[i].cryovialId) !== 'undefined' &&
+           	   $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId !== null && 
+           	   $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId.length === 8 &&
+           	   $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId.startsWith('BR') &&
+           	   /^\d+$/.test($scope.currentEdtaTube.buffyCoatRBC[i].cryovialId.substring(2))){
+                console.log("Passed "+$scope.currentEdtaTube.buffyCoatRBC[i].cryovialId);
            }else{
            	return false;
            }
 		}
 
 		for(i=0;i<$scope.retrievedEdtaTube.rbc.length;i++){
-           if( typeof($scope.currentEdtaTube.rbc[i]) !== 'undefined' &&
-           	   $scope.currentEdtaTube.rbc[i] !== null && 
-           	   $scope.currentEdtaTube.rbc[i].length === 8 &&
-           	   $scope.currentEdtaTube.rbc[i].startsWith('RC') &&
-           	   /^\d+$/.test($scope.currentEdtaTube.rbc[i].substring(2))){
-                ;
+           if( typeof($scope.currentEdtaTube.rbc[i].cryovialId) !== 'undefined' &&
+           	   $scope.currentEdtaTube.rbc[i].cryovialId !== null && 
+           	   $scope.currentEdtaTube.rbc[i].cryovialId.length === 8 &&
+           	   $scope.currentEdtaTube.rbc[i].cryovialId.startsWith('RC') &&
+           	   /^\d+$/.test($scope.currentEdtaTube.rbc[i].cryovialId.substring(2))){
+                console.log("Passed "+$scope.currentEdtaTube.rbc[i].cryovialId);
            }else{
            	return false;
            }
 		}
 		if($scope.editLinkingForm.edtaTubeId.$valid){
-			;
+			console.log("Passed "+$scope.currentEdtaTube.edtaTubeId);
 		}else{
 			return false;
 		}
 		if($scope.editLinkingForm.remarks.$valid){
-			;
+			console.log("Passed "+$scope.currentEdtaTube.remarks);
 		}else{
 			return false;
 		}
