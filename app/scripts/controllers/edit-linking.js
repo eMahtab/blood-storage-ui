@@ -228,12 +228,14 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 	
 	$scope.updateLinking = function() {
 		//Check all input fields are valid
-		console.log("EDTATube "+$scope.editLinkingForm.edtaTubeId.$valid)
-		console.log("Remarks "+$scope.editLinkingForm.remarks.$valid)
+		console.log("EDTATube "+$scope.editLinkingForm.edtaTubeId.$valid);
+		console.log("Remarks "+$scope.editLinkingForm.remarks.$valid);
+
 		if($scope.editLinkingForm.edtaTubeId.$valid && 
 		   $scope.retrievedEdtaTube.edtaTubeId !== null &&	
 		   $scope.currentEdtaTube.plasma.length > 0 &&  checkAllFields()) {
 			console.log('Ready to update');
+		    updateCryovials();
 			/*$scope.busy = true;
 			
 			//var httpPromise = $http.put(httpUrls.linking + $scope.currentEdtaTube.edtaTubeId, $scope.currentEdtaTube);
@@ -244,13 +246,9 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 
 			
 			console.log('editedEdtaTube: ' + JSON.stringify(editedEdtaTube));
+			*/
 
-            var i;
-			var deletePromises = [];
-			for(i=0; i<$scope.retrievedEdtaTube.cryovials.length; i++) {
-				console.log("Delete Cryovial "+$scope.retrievedEdtaTube.cryovials[i]);
-				deletePromises.push($http.delete(httpUrls.cryovial + $scope.retrievedEdtaTube.cryovials[i]));				
-			}*/
+           
 			
 			// TODO: Update current model
 			/*for(var i=0; i<$scope.currentEdtaTube.plasma.length; i++) {
@@ -362,6 +360,56 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 			return false;
 		}
 	   	return true;
+	}
+
+	function updateCryovials(){
+		    var i;
+			var deletePromises = [];
+			for(i=0; i<$scope.retrievedEdtaTube.cryovials.length; i++) {
+				console.log("Delete Cryovial "+$scope.retrievedEdtaTube.cryovials[i]);
+				deletePromises.push($http.delete(httpUrls.cryovial + $scope.retrievedEdtaTube.cryovials[i]));				
+			}
+         
+            var postPromises = [];
+            var cryovial = {}; 
+			
+            for(i=0; i<$scope.currentEdtaTube.plasma.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.plasma[i].cryovialId;
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.buffyCoat.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoat[i].cryovialId;
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.buffyCoatRBC.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId;
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.rbc.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.rbc[i].cryovialId;
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }	
+
+
+			$q.all(deletePromises).then(function() {
+				console.log("All old cryovials deleted");
+				$q.all(postPromises).then(function() {
+					console.log("Cryovial linking is updated");
+				});	
+			});
+			
 	}
 	
 	$timeout(function() {
