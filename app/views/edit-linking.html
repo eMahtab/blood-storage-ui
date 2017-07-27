@@ -2,7 +2,7 @@
 
 <div class="col-md-12">
 	<div class="alert alert-success" role="alert" ng-show="saved"><span style="font-weight: bold">Changes Saved!</span> Changes to EDTA Tube {{ currentEdtaTube.edtaTubeId }} have been saved successfully.</div>
-	<fieldset ng-disable="busy" ng-disabled="busy || saved">
+	<!-- <fieldset ng-disable="busy" ng-disabled="busy || saved"> -->
 	<legend style="text-align: center">Edit Linking</legend>
 	<a href="#/linking">
 		<span class="glyphicon glyphicon-plus"></span>
@@ -105,7 +105,7 @@
 					</span>
 				</td>
 				<td ng-if="currentEdtaTube.rbc.length > 0" class="form-group" ng-class="{'has-success': editLinkingForm.rbc.$valid && !currentEdtaTubeValidity['rbc'], 'has-error': editLinkingForm.rbc.$invalid || currentEdtaTubeValidity['rbc']}">
-					<input type="text" class="form-control" name="rbc" id="rbc" ng-focus="setNextId('edtaTube')" ng-keypress="validateCryovialAndSubmit($event, currentEdtaTube.rbc[0], currentEdtaTube.rbc, editLinkingForm.rbc, 'rbc')" ng-model="currentEdtaTube.rbc[0].cryovialId" ng-pattern="/^RC\d{6,6}$/" />
+					<input type="text" class="form-control" name="rbc" id="rbc" ng-focus="setNextId('edtaTube')" ng-keypress="validateCryovial($event, currentEdtaTube.rbc[0], currentEdtaTube.rbc, editLinkingForm.rbc, 'rbc')" ng-model="currentEdtaTube.rbc[0].cryovialId" ng-pattern="/^RC\d{6,6}$/" />
 
 					<span class="help-block" ng-show="!currentEdtaTubeValidity['rbc'] && editLinkingForm.rbc.$dirty && editLinkingForm.rbc.$invalid">
 						<span ng-show="editLinkingForm.rbc.$error.required">Required</span>
@@ -116,8 +116,10 @@
 					</span>
 				</td>
 				<td>
-				  <button ng-click="updateLinking()" type="button" class="btn btn-primary">Update</button>
+				  <button  ng-click="updateLinking()" 
+				          type="button" class="btn btn-primary">Update</button>
 				</td>
+				<pre>{{editLinkingForm | json}}</pre>
 			</tr>
 			<!-- <tr  ng-repeat="edtaTube in edtaTubes">
 				<td ng-bind="edtaTubes.length - edtaTubes.indexOf(edtaTube)"></td>
@@ -130,8 +132,11 @@
 				<td ng-bind="edtaTube.buffyCoat[0].cryovialId"></td>
 				<td ng-bind="edtaTube.buffyCoat[1].cryovialId"></td>
 				<td ng-bind="edtaTube.rbc[0].cryovialId"></td>
+
+                 ng-disabled="!editLinkingForm.$valid"
+
 			</tr> -->
 		</table>
 	</div>
-	</fieldset>
+	<!-- </fieldset> -->
 </div>
