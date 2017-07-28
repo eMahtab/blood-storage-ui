@@ -36,7 +36,8 @@
 					<div class="col-md-2 col-md-offset-5">
 						<form name="placeCryovialForm" novalidate="novalidate">
 							<div class="form-group" ng-class="{'has-success': placeCryovialForm.cryovialId.$valid && !placeCryovialFormValidity, 'has-error': placeCryovialForm.cryovialId.$invalid || placeCryovialFormValidity}">
-								<input type="text" class="form-control" id="cryovialId" name="cryovialId" placeholder="Scan Cryovial" ng-model="placeCryovialFormInput.cryovialId" ng-keypress="placeCryovial($event)" required="required" pattern="^[PBR]C\d{6,6}$"/>
+								<input type="text" class="form-control" id="cryovialId" name="cryovialId" 
+								placeholder="Scan Cryovial" ng-model="placeCryovialFormInput.cryovialId" ng-keypress="placeCryovial($event)" required="required" pattern="^[PBR]C\d{6,6}$"/>
 								<span class="help-block" ng-show="placeCryovialForm.cryovialId.$invalid && !placeCryovialFormValidity">
 									<span ng-show="placeCryovialForm.cryovialId.$error.pattern">Invalid Barcode</span>
 								</span>

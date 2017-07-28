@@ -41,12 +41,7 @@ app.config(function ($routeProvider) {
         templateUrl: 'views/packing.html',
         controller: 'PackingCtrl',
         controllerAs: 'packing'
-      })
-      .when('/packing', {
-        templateUrl: 'views/packing.html',
-        controller: 'PackingCtrl',
-        controllerAs: 'packing'
-      })
+      })      
       .when('/add-freezer', {
         templateUrl: 'views/add-freezer.html',
         controller: 'AddFreezerCtrl',
@@ -86,11 +81,6 @@ app.config(function ($routeProvider) {
         templateUrl: 'views/synchronize.html',
         controller: 'SynchronizeCtrl',
         controllerAs: 'synchronize'
-      })
-      .when('/packing', {
-        templateUrl: 'views/packing.html',
-        controller: 'PackingCtrl',
-        controllerAs: 'packing'
       })
       .when('/combination',{
         templateUrl: 'views/change-combination.html',

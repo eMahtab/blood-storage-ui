@@ -370,7 +370,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 				deletePromises.push($http.delete(httpUrls.cryovial + $scope.retrievedEdtaTube.cryovials[i]));				
 			}
          
-            var postPromises = [];
+           /* var postPromises = [];
             var cryovial = {}; 
 			
             for(i=0; i<$scope.currentEdtaTube.plasma.length; i++) {
@@ -378,6 +378,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
 					cryovial.remarks = $scope.currentEdtaTube.remarks;
 					cryovial.cryovialId = $scope.currentEdtaTube.plasma[i].cryovialId;
+					cryovial.cryovialType = 'Plasma';
 					postPromises.push($http.post(httpUrls.cryovial, cryovial));
             }
             for(i=0; i<$scope.currentEdtaTube.buffyCoat.length; i++) {
@@ -385,6 +386,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
 					cryovial.remarks = $scope.currentEdtaTube.remarks;
 					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoat[i].cryovialId;
+					cryovial.cryovialType = 'BuffyCoat';
 					postPromises.push($http.post(httpUrls.cryovial, cryovial));
             }
             for(i=0; i<$scope.currentEdtaTube.buffyCoatRBC.length; i++) {
@@ -392,6 +394,7 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
 					cryovial.remarks = $scope.currentEdtaTube.remarks;
 					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId;
+					cryovial.cryovialType = 'BuffyCoatRBC';
 					postPromises.push($http.post(httpUrls.cryovial, cryovial));
             }
             for(i=0; i<$scope.currentEdtaTube.rbc.length; i++) {
@@ -399,14 +402,53 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
 					cryovial.remarks = $scope.currentEdtaTube.remarks;
 					cryovial.cryovialId = $scope.currentEdtaTube.rbc[i].cryovialId;
+					cryovial.cryovialType = 'RBC';
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }	
+*/
+
+			$q.all(deletePromises).then(function(result) {
+				console.log("All old cryovials deleted");
+				result.forEach(function(del){console.log(del);});
+				var i;
+				 var postPromises = [];
+            var cryovial = {}; 
+			
+            for(i=0; i<$scope.currentEdtaTube.plasma.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.plasma[i].cryovialId;
+					cryovial.cryovialType = 'Plasma';
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.buffyCoat.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoat[i].cryovialId;
+					cryovial.cryovialType = 'BuffyCoat';
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.buffyCoatRBC.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.buffyCoatRBC[i].cryovialId;
+					cryovial.cryovialType = 'BuffyCoatRBC';
+					postPromises.push($http.post(httpUrls.cryovial, cryovial));
+            }
+            for(i=0; i<$scope.currentEdtaTube.rbc.length; i++) {
+                    cryovial = {};
+					cryovial.edtaTubeId = $scope.currentEdtaTube.edtaTubeId;
+					cryovial.remarks = $scope.currentEdtaTube.remarks;
+					cryovial.cryovialId = $scope.currentEdtaTube.rbc[i].cryovialId;
+					cryovial.cryovialType = 'RBC';
 					postPromises.push($http.post(httpUrls.cryovial, cryovial));
             }	
 
-
-			$q.all(deletePromises).then(function() {
-				console.log("All old cryovials deleted");
-				$q.all(postPromises).then(function() {
-					console.log("Cryovial linking is updated");
+				$q.all(postPromises).then(function(result) {
+					result.forEach(function(item){console.log(item);});
 				});	
 			});
 			
