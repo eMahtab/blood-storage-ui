@@ -456,6 +456,28 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
+  grunt.registerTask('buildWithoutCDNify', [
+    'clean:dist',
+    'wiredep',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'ngtemplates',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',    
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+
+  grunt.registerTask('package', [
+    'buildWithoutCDNify'
+    
+  ]);
+
   grunt.registerTask('default', [
     'newer:jshint',
     'test',

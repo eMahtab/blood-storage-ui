@@ -34,7 +34,9 @@ angular.module('ishaLogisticsApp').controller('EditLinkingCtrl', function ($scop
 		
 	$scope.busy = false;
 	
-	$scope.validateCryovial = function(event, model, parentModel, formValidationField, currentEdtaTubeValidityField, callback) {
+	//$scope.validateCryovial = function(event, model, parentModel, formValidationField, currentEdtaTubeValidityField, callback) {
+   	$scope.validateCryovial = function(event, model, parentModel, formValidationField, currentEdtaTubeValidityField) {
+
         $scope.currentEdtaTubeValidity[currentEdtaTubeValidityField] = null;
 
         console.log("Model "+JSON.stringify(model));

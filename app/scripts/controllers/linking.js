@@ -299,7 +299,7 @@ angular.module('ishaLogisticsApp').controller('LinkingCtrl', function ($window,$
 		}
 	};
 	
-	var removeCryovialsWithoutCryovialId = function(newEdtaTube) {
+	/*var removeCryovialsWithoutCryovialId = function(newEdtaTube) {
 		var toRemove = [];
 		for(var i=0; i<newEdtaTube.plasma.length; i++) {
 			if(!newEdtaTube.plasma[newEdtaTube.plasma.length-i-1].cryovialId) {
@@ -334,7 +334,7 @@ angular.module('ishaLogisticsApp').controller('LinkingCtrl', function ($window,$
 		}
 		
 		return newEdtaTube;
-	};
+	};*/
 
 	function addEDTATube(edtaTube){
        console.log("Adding EDTA "+JSON.stringify(edtaTube));
