@@ -23,6 +23,7 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 	$scope.openCryovialBoxFormInputValidity = null;
 		
 	$scope.currentCryovialBox = null;
+	$scope.currentCryovialBoxType = null;
 	$scope.currentCryovialBoxItemMap = null;
 	$scope.currentCryovialBoxItems = [];
 	$scope.currentCryovialBoxEdtaTubes = [];
@@ -68,6 +69,13 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 							}
 							console.log('$scope.currentCryovialBoxEdtaTubes: ' + $scope.currentCryovialBoxEdtaTubes);
 						}
+
+						console.log("Printing CurrentCryovialBoxItemMap");
+						for(var r1=0;r1<$scope.currentCryovialBoxItemMap.length;r1++){
+							for(var c1=0;c1<$scope.currentCryovialBoxItemMap[r1].length;c1++){
+								console.log(""+r1+" - "+c1+" "+$scope.currentCryovialBoxItemMap[r1][c1]);
+							}
+						}
 						
 						$timeout(function() {
 							document.getElementById('cryovialId').focus();
@@ -99,11 +107,12 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 				$scope.placeCryovialFormValidity = {formInvalid: true};
 				console.log(">>> Place cryovial form Invallid <<<");
 			}
-			if(($scope.currentCryovialBox.cryovialType === 'Plasma' && $scope.placeCryovialFormInput.cryovialId.indexOf('PC') !== 0) ||
-				($scope.currentCryovialBox.cryovialType === 'BuffyCoat' && $scope.placeCryovialFormInput.cryovialId.indexOf('BC') !== 0) ||
-				($scope.currentCryovialBox.cryovialType === 'RBC' && $scope.placeCryovialFormInput.cryovialId.indexOf('RC') !== 0)) {
+			if(($scope.currentCryovialBoxType === 'Plasma' && $scope.placeCryovialFormInput.cryovialId.indexOf('PC') !== 0) ||
+				($scope.currentCryovialBoxType === 'BuffyCoat' && $scope.placeCryovialFormInput.cryovialId.indexOf('BC') !== 0) ||
+				($scope.currentCryovialBoxType === 'BuffyCoatRBC' && $scope.placeCryovialFormInput.cryovialId.indexOf('BR') !== 0) ||
+				($scope.currentCryovialBoxType === 'RBC' && $scope.placeCryovialFormInput.cryovialId.indexOf('RC') !== 0)) {
 				$scope.placeCryovialFormValidity = {type: true};
-			    console.log(">>>> Returning <<<<<");
+			    console.log(">>>> Wrong Cryovial Type <<<<<");
 				return;
 			}
 			
@@ -167,10 +176,12 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 				//var update_cryovial={}
 				var placePromise = $http.post(httpUrls.cryovial, JSON.stringify(data.data));
 				
-				placePromise.then(function() {
-					$scope.currentCryovialBoxItemMap[data.cryovialBoxRow].splice(data.cryovialBoxColumn, 1, data.cryovialId);
+				placePromise.then(function(res) {
+					console.log("Updated POST "+JSON.stringify(res));
+					console.log("Updated POST Data "+JSON.stringify(res.data));
+					$scope.currentCryovialBoxItemMap[data.data.cryovialBoxRow].splice(data.data.cryovialBoxColumn, 1, data.data.cryovialId);
 					$scope.currentCryovialBox = data;
-					$scope.currentCryovialBoxEdtaTubes.push(data.edtaTubeId);
+					$scope.currentCryovialBoxEdtaTubes.push(data.data.edtaTubeId);
 					$scope.placeCryovialFormInput.cryovialId = null;
 					$scope.currentCryovialBoxItems.push(data);
 					console.log('items: ' + JSON.stringify($scope.currentCryovialBoxItemMap));
@@ -197,16 +208,16 @@ angular.module('ishaLogisticsApp').controller('PackingCtrl', function ($scope, $
 
 	function setCryovialBoxType(){
 		if($scope.openCryovialBoxFormInput.cryovialBoxId.startsWith('PB')){
-			$scope.currentCryovialBox.cryovialType = 'Plasma';
+			$scope.currentCryovialBoxType = 'Plasma';
 			console.log("Cryovial Box Type "+$scope.currentCryovialBox.cryovialType);
 		}else if($scope.openCryovialBoxFormInput.cryovialBoxId.startsWith('BB')){
-			$scope.currentCryovialBox.cryovialType = 'BuffyCoat';
+			$scope.currentCryovialBoxType = 'BuffyCoat';
 			console.log("Cryovial Box Type "+$scope.currentCryovialBox.cryovialType);
 		}else if($scope.openCryovialBoxFormInput.cryovialBoxId.startsWith('BRB')){
-			$scope.currentCryovialBox.cryovialType = 'BuffyCoatRBC';
+			$scope.currentCryovialBoxType = 'BuffyCoatRBC';
 			console.log("Cryovial Box Type "+$scope.currentCryovialBox.cryovialType);
 		}else if($scope.openCryovialBoxFormInput.cryovialBoxId.startsWith('RB')){
-			$scope.currentCryovialBox.cryovialType = 'RBC';
+			$scope.currentCryovialBoxType = 'RBC';
 			console.log("Cryovial Box Type "+$scope.currentCryovialBox.cryovialType);
 		}
 		

@@ -11,7 +11,7 @@
 			<div class="panel-body">
 				<form name="openCryovialBoxForm" novalidate="novalidate">
 					<div class="form-group" ng-class="{'has-success':  openCryovialBoxForm.cryovialBoxId.$valid && !openCryovialBoxFormInputValidity.notFound, 'has-error': openCryovialBoxForm.cryovialBoxId.$invalid || openCryovialBoxFormInputValidity.notFound}">
-						<input type="text" class="form-control" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" ng-model="openCryovialBoxFormInput.cryovialBoxId" ng-keypress="openCryovialBox($event)" ng-show="!currentCryovialBox.items || currentCryovialBox.items.length < 100" required="required" pattern="^[PBR]B\d{6,6}$" />
+						<input type="text" class="form-control" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" ng-model="openCryovialBoxFormInput.cryovialBoxId" ng-keypress="openCryovialBox($event)" ng-show="!currentCryovialBox.items || currentCryovialBox.items.length < 100" required="required" pattern="^([PBR]||BR)B\d{6,6}$" />
 						<p style="form-control-static" ng-show="currentCryovialBox.items && currentCryovialBox.items.length >= 100"></p>
 						<span class="help-block" ng-show="!openCryovialBoxFormInputValidity.notFound && openCryovialBoxForm.cryovialBoxId.$invalid">
 							<span ng-show="openCryovialBoxForm.cryovialBoxId.$error.pattern">Invalid Barcode</span>
@@ -37,7 +37,7 @@
 						<form name="placeCryovialForm" novalidate="novalidate">
 							<div class="form-group" ng-class="{'has-success': placeCryovialForm.cryovialId.$valid && !placeCryovialFormValidity, 'has-error': placeCryovialForm.cryovialId.$invalid || placeCryovialFormValidity}">
 								<input type="text" class="form-control" id="cryovialId" name="cryovialId" 
-								placeholder="Scan Cryovial" ng-model="placeCryovialFormInput.cryovialId" ng-keypress="placeCryovial($event)" required="required" pattern="^[PBR]C\d{6,6}$"/>
+								placeholder="Scan Cryovial" ng-model="placeCryovialFormInput.cryovialId" ng-keypress="placeCryovial($event)" required="required" pattern="^(PC||BC||BR||RC)\d{6,6}$"/>
 								<span class="help-block" ng-show="placeCryovialForm.cryovialId.$invalid && !placeCryovialFormValidity">
 									<span ng-show="placeCryovialForm.cryovialId.$error.pattern">Invalid Barcode</span>
 								</span>

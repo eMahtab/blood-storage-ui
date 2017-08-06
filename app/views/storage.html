@@ -32,7 +32,7 @@
 					<div class="col-md-2 col-md-offset-5">
 						<form name="placeCryovialBoxForm" novalidate="novalidate">
 							<div class="form-group" ng-class="{'has-success': placeCryovialBoxForm.cryovialBoxId.$valid && !placeCryovialBoxFormInputValidity, 'has-error': placeCryovialBoxForm.cryovialBoxId.$invalid || placeCryovialBoxFormInputValidity}">
-								<input class="form-control" type="text" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" required="required" pattern="^[PBR]B\d{6,6}$" ng-model="placeCryovialBoxFormInput.cryovialBoxId" ng-keypress="placeCryovialBoxInFreezerRack($event)" />
+								<input class="form-control" type="text" name="cryovialBoxId" id="cryovialBoxId" placeholder="Scan Cryovial Box" required="required" pattern="^(P||B||BR||R)B\d{6,6}$" ng-model="placeCryovialBoxFormInput.cryovialBoxId" ng-keypress="placeCryovialBoxInFreezerRack($event)" />
 								<span class="help-block" ng-show="!placeCryovialBoxFormInputValidity && placeCryovialBoxForm.cryovialBoxId.$dirty && placeCryovialBoxForm.cryovialBoxId.$invalid">
 									<span ng-show="placeCryovialBoxForm.cryovialBoxId.$error.required">Required</span>
 									<span ng-show="placeCryovialBoxForm.cryovialBoxId.$error.pattern">Invalid Barcode</span>

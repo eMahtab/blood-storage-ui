@@ -33,8 +33,8 @@ angular.module('ishaLogisticsApp').controller('AddFreezerCtrl', function ($scope
 		if(event.keyCode === 13 && $scope.addFreezerForm.freezerId.$valid) {
 			var retrieveFreezerPromise = $http.get(httpUrls.freezerUnit + $scope.addFreezerFormInput.freezerId);
 			
-			retrieveFreezerPromise.success(function(data) {
-				if(data.length > 0) {
+			retrieveFreezerPromise.then(function(data) {
+				if(data.data.length > 0) {
 					$scope.addFreezerFormInputValidity.freezerId = 'duplicate';
 					return;
 				}
@@ -43,7 +43,7 @@ angular.module('ishaLogisticsApp').controller('AddFreezerCtrl', function ($scope
 				$scope.transitionOnEnter(event);
 			});
 			
-			retrieveFreezerPromise.error(function() {
+			retrieveFreezerPromise.catch(function() {
 				console.error('Problem');
 			});
 		}
@@ -64,8 +64,8 @@ angular.module('ishaLogisticsApp').controller('AddFreezerCtrl', function ($scope
 			// Check for Duplicate Freezer Rack
 			var retrieveFreezerFromRackPromise = $http.get(httpUrls.freezerRack + inputModel.freezerRackId);
 			
-			retrieveFreezerFromRackPromise.success(function(data) {
-				if(inputModel.freezerRackId === data.freezerRackId) {
+			retrieveFreezerFromRackPromise.then(function(data) {
+				if(inputModel.freezerRackId === data.data.freezerRackId) {
 					$scope.addFreezerFormInputValidity[errorProperty] = 'duplicate';
 					return;
 				}
@@ -79,7 +79,7 @@ angular.module('ishaLogisticsApp').controller('AddFreezerCtrl', function ($scope
 				}
 			});
 			
-			retrieveFreezerFromRackPromise.error(function() {
+			retrieveFreezerFromRackPromise.catch(function() {
 				console.log('Problem');
 				
 			});
@@ -107,7 +107,8 @@ angular.module('ishaLogisticsApp').controller('AddFreezerCtrl', function ($scope
 	};
 	
 	var isFormValid = function() {
-		if($scope.addFreezerForm.$valid && $scope.addFreezerFormInputValidity.freezerId === 'OK' && $scope.addFreezerFormInputValidity.rack0 === 'OK'&&
+		if($scope.addFreezerForm.$valid && $scope.addFreezerFormInputValidity.freezerId === 'OK' && 
+			$scope.addFreezerFormInputValidity.rack0 === 'OK'&&
 			$scope.addFreezerFormInputValidity.rack1 === 'OK' && $scope.addFreezerFormInputValidity.rack2 === 'OK' &&
 			$scope.addFreezerFormInputValidity.rack3 === 'OK') {
 			return true;

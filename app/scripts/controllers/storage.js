@@ -39,21 +39,21 @@ angular.module('ishaLogisticsApp').controller('StorageCtrl', function ($scope, $
 		if(event.keyCode === 13 && $scope.openFreezerRackForm.$valid) {
 			var retrieveFreezerFromRackPromise = $http.get(httpUrls.freezerRack + $scope.openFreezerRackFormInput.freezerRackId);
 			
-			retrieveFreezerFromRackPromise.success(function(data) {
-				if($scope.openFreezerRackFormInput.freezerRackId !== data.freezerRackId) {
+			retrieveFreezerFromRackPromise.then(function(data) {
+				if($scope.openFreezerRackFormInput.freezerRackId !== data.data.freezerRackId) {
 					$scope.openFreezerRackFormInputValidity = 'notFound';
 					$scope.openFreezerRackFormInput.freezerRackId = null;
 					return;
 				}
 				
-				var retrieveFreezerPromise = $http.get(httpUrls.freezerUnit + data.freezerUnitId);
+				var retrieveFreezerPromise = $http.get(httpUrls.freezerUnit + data.data.freezerUnitId);
 				
-				retrieveFreezerPromise.success(function(data1) {
+				retrieveFreezerPromise.then(function(data1) {
 					var currentFreezerUnit = {};
-					currentFreezerUnit.freezerId = data.freezerUnitId;
+					currentFreezerUnit.freezerId = data.data.freezerUnitId;
 					currentFreezerUnit.racks  = [null,null,null,null];
-					for(var i=0; i<data1.length; i++) {
-						currentFreezerUnit.racks[data1[i].position] = {freezerRackId: data1[i].freezerRackId};
+					for(var i=0; i<data1.data.length; i++) {
+						currentFreezerUnit.racks[data1.data[i].position] = {freezerRackId: data1.data[i].freezerRackId};
 					}
 					
 					$scope.currentFreezerUnit = currentFreezerUnit;
@@ -63,12 +63,12 @@ angular.module('ishaLogisticsApp').controller('StorageCtrl', function ($scope, $
 					});
 				});
 				
-				retrieveFreezerPromise.error(function() {
+				retrieveFreezerPromise.catch(function() {
 					console.error('Problem');
 				});
 			});
 			
-			retrieveFreezerFromRackPromise.error(function() {
+			retrieveFreezerFromRackPromise.catch(function() {
 				console.error('Problem');
 			});
 		}
@@ -81,17 +81,17 @@ angular.module('ishaLogisticsApp').controller('StorageCtrl', function ($scope, $
 			var cryovialBoxId = $scope.placeCryovialBoxFormInput.cryovialBoxId;
 			var retrieveBoxPromise = $http.get(httpUrls.cryovialBox + $scope.placeCryovialBoxFormInput.cryovialBoxId);
 			
-			retrieveBoxPromise.success(function(data) {
-				if($scope.placeCryovialBoxFormInput.cryovialBoxId !== data.cryovialBoxId) {
+			retrieveBoxPromise.then(function(data) {
+				if($scope.placeCryovialBoxFormInput.cryovialBoxId !== data.data.cryovialBoxId) {
 					$scope.placeCryovialBoxFormInputValidity = 'notFound';
 					return;
 				}
 				
-				data.freezerRackId = $scope.openFreezerRackFormInput.freezerRackId;
+				data.data.freezerRackId = $scope.openFreezerRackFormInput.freezerRackId;
 				
-				var placeBoxPromise = $http.post(httpUrls.cryovialBox, data);
+				var placeBoxPromise = $http.post(httpUrls.cryovialBox, data.data);
 				
-				placeBoxPromise.success(function(data, status) {
+				placeBoxPromise.then(function(data, status) {
 					console.log('success: ' + status);
 					$scope.placeCryovialBoxFormInput.cryovialBoxId = null;
 					$scope.placeCryovialBoxForm.cryovialBoxId.$setPristine();
@@ -102,7 +102,7 @@ angular.module('ishaLogisticsApp').controller('StorageCtrl', function ($scope, $
 				});
 			});
 			
-			retrieveBoxPromise.error(function() {
+			retrieveBoxPromise.catch(function() {
 				console.error('Problem');
 			});
 		}
